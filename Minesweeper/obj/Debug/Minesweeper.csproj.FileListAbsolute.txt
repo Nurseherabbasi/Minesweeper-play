@@ -9,3 +9,4 @@ C:\Users\Nurseher ABBASİ\source\repos\Minesweeper\Minesweeper\obj\Debug\Mineswe
 C:\Users\Nurseher ABBASİ\source\repos\Minesweeper\Minesweeper\obj\Debug\Minesweeper.csproj.CoreCompileInputs.cache
 C:\Users\Nurseher ABBASİ\source\repos\Minesweeper\Minesweeper\obj\Debug\Minesweeper.exe
 C:\Users\Nurseher ABBASİ\source\repos\Minesweeper\Minesweeper\obj\Debug\Minesweeper.pdb
+C:\Users\Nurseher ABBASİ\source\repos\Minesweeper\Minesweeper\obj\Debug\Minesweeper.exe.config

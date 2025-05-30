@@ -17,6 +17,8 @@ namespace Minesweeper
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
+            Oyun oyun = new Oyun();
+            oyun.Baslat();
         }
     }
 }
