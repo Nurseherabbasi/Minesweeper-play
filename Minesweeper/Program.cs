@@ -6,19 +6,13 @@ using System.Windows.Forms;
 
 namespace Minesweeper
 {
-    internal static class Program
+    internal class Program
     {
-        /// <summary>
-        /// Uygulamanın ana girdi noktası.
-        /// </summary>
-        [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
-            Oyun oyun = new Oyun();
+            Oyun oyun = new();
             oyun.Baslat();
         }
     }
 }
+
