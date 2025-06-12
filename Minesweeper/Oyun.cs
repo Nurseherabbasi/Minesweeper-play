@@ -5,51 +5,42 @@ namespace Minesweeper
     internal class Oyun
     {
         private Tahta tahta;
+        private bool oyunBitti = false;
 
         public void Baslat()
         {
-            Console.WriteLine("Mayın Tarlası Oyununa Hoş Geldiniz!");
-            tahta = new Tahta(9, 9, 10);
+            Console.WriteLine("Zorluk Seç (1: Kolay 9x9 10M, 2: Orta 16x16 40M, 3: Zor 16x30 99M): ");
+            int secim = int.Parse(Console.ReadLine()!);
+            int s = 9, t = 9, m = 10;
+            if (secim == 2) { s = 16; t = 16; m = 40; }
+            else if (secim == 3) { s = 16; t = 30; m = 99; }
 
-            while (true)
+            tahta = new Tahta(s, t, m);
+
+            while (!oyunBitti)
             {
-                Console.Clear();
                 tahta.Goster();
+                Console.Write("Satır ve Sütun gir (örn: 3 4): ");
+                string[] giris = Console.ReadLine()!.Split();
+                int x = int.Parse(giris[0]);
+                int y = int.Parse(giris[1]);
 
-                Console.Write("Koordinat gir (örnek: 3 4): ");
-                var input = Console.ReadLine();
-                var parcalar = input.Split();
-
-                if (parcalar.Length != 2 || !int.TryParse(parcalar[0], out int x) || !int.TryParse(parcalar[1], out int y))
+                if (tahta.Alan[x, y].MayinVarMi)
                 {
-                    Console.WriteLine("Geçersiz giriş. Enter ile devam et.");
-                    Console.ReadLine();
-                    continue;
-                }
-
-                var secilenHucre = tahta.Hucreler[x, y];
-
-                if (secilenHucre.MayinVarMi)
-                {
-                    Console.Clear();
-                    tahta.Goster(gizli: false);
-                    Console.WriteLine("💥 Mayına bastınız! Oyun bitti.");
+                    oyunBitti = true;
+                    Console.WriteLine("💥 Mayına bastınız! Oyun Bitti.");
                     break;
                 }
 
-                tahta.HucreyiAc(x, y);
+                tahta.HucreAc(x, y);
 
                 if (tahta.KazanildiMi())
                 {
-                    Console.Clear();
-                    tahta.Goster(gizli: false);
-                    Console.WriteLine("🎉 Tebrikler! Tüm mayınsız hücreleri açtınız.");
+                    tahta.Goster();
+                    Console.WriteLine("🎉 Tebrikler! Oyunu kazandınız.");
                     break;
                 }
             }
-
-            Console.WriteLine("Çıkmak için bir tuşa basın...");
-            Console.ReadKey();
         }
     }
 }

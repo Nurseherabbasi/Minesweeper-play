@@ -4,137 +4,110 @@ namespace Minesweeper
 {
     internal class Tahta
     {
-        public int Satir { get; }
-        public int Sutun { get; }
-        public int MayinSayisi { get; }
-        public Hucre[,] Hucreler { get; }
-
-        private Random random = new Random();
+        private readonly int satir;
+        private readonly int sutun;
+        private readonly int mayinSayisi;
+        public Hucre[,] Alan { get; private set; }
+        private readonly Random rnd = new();
 
         public Tahta(int satir, int sutun, int mayinSayisi)
         {
-            Satir = satir;
-            Sutun = sutun;
-            MayinSayisi = mayinSayisi;
-            Hucreler = new Hucre[Satir, Sutun];
-
-            for (int i = 0; i < Satir; i++)
-            {
-                for (int j = 0; j < Sutun; j++)
-                {
-                    Hucreler[i, j] = new Hucre();
-                }
-            }
-
+            this.satir = satir;
+            this.sutun = sutun;
+            this.mayinSayisi = mayinSayisi;
+            Alan = new Hucre[satir, sutun];
+            AlanOlustur();
             MayinlariYerlestir();
             CevreleriHesapla();
         }
 
+        private void AlanOlustur()
+        {
+            for (int i = 0; i < satir; i++)
+                for (int j = 0; j < sutun; j++)
+                    Alan[i, j] = new Hucre();
+        }
+
         private void MayinlariYerlestir()
         {
-            int yerlestirilen = 0;
-            while (yerlestirilen < MayinSayisi)
+            int sayac = 0;
+            while (sayac < mayinSayisi)
             {
-                int x = random.Next(Satir);
-                int y = random.Next(Sutun);
-
-                if (!Hucreler[x, y].MayinVarMi)
+                int i = rnd.Next(satir);
+                int j = rnd.Next(sutun);
+                if (!Alan[i, j].MayinVarMi)
                 {
-                    Hucreler[x, y].MayinVarMi = true;
-                    yerlestirilen++;
+                    Alan[i, j].MayinVarMi = true;
+                    sayac++;
                 }
             }
         }
 
         private void CevreleriHesapla()
         {
-            for (int i = 0; i < Satir; i++)
+            for (int i = 0; i < satir; i++)
             {
-                for (int j = 0; j < Sutun; j++)
+                for (int j = 0; j < sutun; j++)
                 {
-                    if (Hucreler[i, j].MayinVarMi) continue;
+                    if (Alan[i, j].MayinVarMi) continue;
 
-                    int sayac = 0;
-                    for (int dx = -1; dx <= 1; dx++)
+                    int sayi = 0;
+                    for (int x = -1; x <= 1; x++)
                     {
-                        for (int dy = -1; dy <= 1; dy++)
+                        for (int y = -1; y <= 1; y++)
                         {
-                            int ni = i + dx;
-                            int nj = j + dy;
-
-                            if (ni >= 0 && ni < Satir && nj >= 0 && nj < Sutun && Hucreler[ni, nj].MayinVarMi)
-                                sayac++;
+                            int ni = i + x;
+                            int nj = j + y;
+                            if (ni >= 0 && ni < satir && nj >= 0 && nj < sutun && Alan[ni, nj].MayinVarMi)
+                                sayi++;
                         }
                     }
-
-                    Hucreler[i, j].CevreMayinSayisi = sayac;
+                    Alan[i, j].CevreMayinSayisi = sayi;
                 }
             }
         }
 
-        public void HucreyiAc(int x, int y)
+        public void Goster()
         {
-            if (x < 0 || x >= Satir || y < 0 || y >= Sutun) return;
-            if (Hucreler[x, y].AcildiMi || Hucreler[x, y].IsaretliMi) return;
+            Console.Clear();
+            Console.Write("   ");
+            for (int j = 0; j < sutun; j++)
+                Console.Write(j + " ");
+            Console.WriteLine();
 
-            Hucreler[x, y].AcildiMi = true;
+            for (int i = 0; i < satir; i++)
+            {
+                Console.Write(i + " ");
+                if (i < 10) Console.Write(" ");
+                for (int j = 0; j < sutun; j++)
+                    Console.Write(Alan[i, j] + " ");
+                Console.WriteLine();
+            }
+        }
 
-            if (Hucreler[x, y].CevreMayinSayisi == 0 && !Hucreler[x, y].MayinVarMi)
+        public void HucreAc(int x, int y)
+        {
+            if (x < 0 || x >= satir || y < 0 || y >= sutun) return;
+            var hucre = Alan[x, y];
+            if (hucre.AcildiMi || hucre.IsaretliMi) return;
+
+            hucre.AcildiMi = true;
+
+            if (hucre.CevreMayinSayisi == 0 && !hucre.MayinVarMi)
             {
                 for (int dx = -1; dx <= 1; dx++)
-                {
                     for (int dy = -1; dy <= 1; dy++)
-                    {
-                        if (dx != 0 || dy != 0)
-                        {
-                            HucreyiAc(x + dx, y + dy);
-                        }
-                    }
-                }
+                        HucreAc(x + dx, y + dy);
             }
         }
 
         public bool KazanildiMi()
         {
-            for (int i = 0; i < Satir; i++)
-            {
-                for (int j = 0; j < Sutun; j++)
-                {
-                    if (!Hucreler[i, j].MayinVarMi && !Hucreler[i, j].AcildiMi)
+            for (int i = 0; i < satir; i++)
+                for (int j = 0; j < sutun; j++)
+                    if (!Alan[i, j].MayinVarMi && !Alan[i, j].AcildiMi)
                         return false;
-                }
-            }
             return true;
-        }
-
-        public void Goster(bool gizli = true)
-        {
-            Console.Write("   ");
-            for (int j = 0; j < Sutun; j++) Console.Write(j + " ");
-            Console.WriteLine();
-
-            for (int i = 0; i < Satir; i++)
-            {
-                Console.Write(i + " |");
-                for (int j = 0; j < Sutun; j++)
-                {
-                    var h = Hucreler[i, j];
-                    if (h.AcildiMi)
-                    {
-                        Console.Write(h.MayinVarMi ? "*" : (h.CevreMayinSayisi == 0 ? " " : h.CevreMayinSayisi.ToString()));
-                    }
-                    else if (h.IsaretliMi)
-                    {
-                        Console.Write("F");
-                    }
-                    else
-                    {
-                        Console.Write("#");
-                    }
-                    Console.Write(" ");
-                }
-                Console.WriteLine();
-            }
         }
     }
 }
