@@ -1,0 +1,6 @@
+C:\Users\Nurseher ABBASİ\source\repos\Minesweeper_OOP\Minesweeper_OOP\obj\Debug\Minesweeper_OOP.csproj.AssemblyReference.cache
+C:\Users\Nurseher ABBASİ\source\repos\Minesweeper_OOP\Minesweeper_OOP\obj\Debug\ProfessionalMinesweeper.CustomDifficultyDialog.resources
+C:\Users\Nurseher ABBASİ\source\repos\Minesweeper_OOP\Minesweeper_OOP\obj\Debug\ProfessionalMinesweeper.MinesweeperForm.resources
+C:\Users\Nurseher ABBASİ\source\repos\Minesweeper_OOP\Minesweeper_OOP\obj\Debug\Minesweeper_OOP.Properties.Resources.resources
+C:\Users\Nurseher ABBASİ\source\repos\Minesweeper_OOP\Minesweeper_OOP\obj\Debug\Minesweeper_OOP.csproj.GenerateResource.cache
+C:\Users\Nurseher ABBASİ\source\repos\Minesweeper_OOP\Minesweeper_OOP\obj\Debug\Minesweeper_OOP.csproj.CoreCompileInputs.cache
